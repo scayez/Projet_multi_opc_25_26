@@ -1,0 +1,12 @@
+[
+    {
+        "Lens": "Objective",
+        "Id": "GPP-1326",
+        "Adress": "ASRL6::INSTR",
+        "Channel": null,
+        "Vmin": 0.0,
+        "Vmax": 500.0,
+        "Imin": 0.0,
+        "Imax": 50.0
+    }
+]
