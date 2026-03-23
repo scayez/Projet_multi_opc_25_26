@@ -1,0 +1,3 @@
+- Dans scan, utiliser 2 jeux de bobines de scan x et y avec un facteur multiplicatif entre x1 et x2 et un autre entre y1 et y2
+- dans calculation essayer d'implemanter un thread worker
+- dans main window ajouter le bouton calculation

@@ -1,0 +1,42 @@
+[
+    {
+        "Lens": "Objective",
+        "Id": "GPP-1326",
+        "Adress": "ASRL6::INSTR",
+        "Channel": null,
+        "Vmin": 0.0,
+        "Vmax": 12000.0,
+        "Imin": 0.0,
+        "Imax": 5000.0
+    },
+    {
+        "Lens": "Condenser",
+        "Id": "GPP-2323 #2 (Channel1)",
+        "Adress": "ASRL4::INSTR",
+        "Channel": 1,
+        "Vmin": 0.0,
+        "Vmax": 12000.0,
+        "Imin": 0.0,
+        "Imax": 1000.0
+    },
+    {
+        "Lens": "Condenser",
+        "Id": "GPP-2323 #2 (Channel2)",
+        "Adress": "ASRL4::INSTR",
+        "Channel": 1,
+        "Vmin": 0.0,
+        "Vmax": 12000.0,
+        "Imin": 0.0,
+        "Imax": 1000.0
+    },
+    {
+        "Lens": "Scan X",
+        "Id": "GPP-2323 #1 (Channel1)",
+        "Adress": "ASRL5::INSTR",
+        "Channel": 1,
+        "Vmin": 0.0,
+        "Vmax": 1000.0,
+        "Imin": 0.0,
+        "Imax": 500.0
+    }
+]
