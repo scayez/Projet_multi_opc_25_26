@@ -33,6 +33,7 @@ class test_slider(QWidget):
 
         # Initialiser les sliders aux valeurs minimales (IMPORTANT !)
         self.slider.setValue(0)  
+        self.box.setSingleStep(0.1)
 
         self.slider.valueChanged.connect(self.slider_to_box)
         self.box.valueChanged.connect(self.box_to_slider)

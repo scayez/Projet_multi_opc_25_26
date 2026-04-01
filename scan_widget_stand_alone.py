@@ -9,6 +9,8 @@ from scan import ScanGenerator
 from power_supply import PowerSupply
 from acq import NiDetectorAcquisition
 from PyQt6.QtWidgets import QVBoxLayout
+from PyQt6.QtCore import pyqtSlot
+
 # Définir le chemin du fichier UI (interface graphique)
 dossier_courant = os.path.dirname(os.path.abspath(__file__))
 qtCreatorFile = os.path.join(dossier_courant, "interface", "scan.ui")
@@ -55,10 +57,15 @@ class ScanWidget(QWidget):
         # Initialiser l'acquisition simulée #####ATTENTION CHANGER POUR ACQUISITION REELE ######
         #self.acquisition = NiDetectorAcquisition(response_time=0.001)
         self.acquisition = NiDetectorAcquisition(channel_read="Dev2/ai1")#, response_time=0.001)
+        self.acquisition.voltageMeasured.connect(self.update_voltage_label)  # Ajoute cette ligne
         self.sem_viewer = None
         # Désactiver certains éléments de l'interface tant qu'aucun scan n'est lancé
         self.update_ui_state(scanning=False)
 
+    # Afficher la tension SE en continu dans l'interface graphique
+    @pyqtSlot(float)
+    def update_voltage_label(self, voltage):
+        self.label_voltage_measured.setText(f"{voltage:.6f}")
 
     def start_scan(self):
         """

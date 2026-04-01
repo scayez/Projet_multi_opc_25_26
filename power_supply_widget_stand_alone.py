@@ -100,11 +100,22 @@ class PowerSupplyWidget(QWidget):
         self.Slider_voltage.setMaximum(int(self.alim.Vmax))
         self.Slider_current.setMinimum(int(self.alim.Imin))
         self.Slider_current.setMaximum(int(self.alim.Imax))
+        self.Voltage_incr.setMaximum(int(self.alim.Vmax/1000))
+        self.Current_incr.setMaximum(int(self.alim.Imax/1000))
+        self.Voltage_incr.setMinimum(int(self.alim.Vmin/1000))
+        self.Current_incr.setMinimum(int(self.alim.Imin/1000))
 
         # Initialiser les sliders aux valeurs minimales (IMPORTANT !)
         self.Slider_voltage.setValue(int(self.alim.Vmin))  # mV
         self.Slider_current.setValue(int(self.alim.Imin))  # mA
-      
+        self.Voltage_incr.setValue(int(self.alim.Vmin))  # mV
+        self.Current_incr.setValue(int(self.alim.Imin))  # mA
+
+        # Initialiser le step des sliders et box d'incrémentation
+        self.Voltage_incr.setSingleStep((self.alim.Vmax - self.alim.Vmin) / (100*1000)) # step de 1% de la plage
+        self.Current_incr.setSingleStep((self.alim.Imax - self.alim.Imin) / (100*1000))  # step de 1% de la plage
+
+
         # Initialiser les valeurs avec les minimums définis
         self.voltage_value = self.alim.Vmin / 1000 #Appel de la fonction dans le CB update_voltage
         self.current_value = self.alim.Imin / 1000
@@ -116,6 +127,35 @@ class PowerSupplyWidget(QWidget):
         self.Slider_current.valueChanged.connect(self.update_current)
         self.Slider_voltage.valueChanged.connect(self.on_slider_changed)
         self.Slider_current.valueChanged.connect(self.on_slider_changed)
+    # --- Liaison sliders <-> spinbox ---
+        self.Slider_voltage.valueChanged.connect(self.slider_to_box_voltage)
+        self.Voltage_incr.valueChanged.connect(self.box_to_slider_voltage)
+        self.Slider_current.valueChanged.connect(self.slider_to_box_current)
+        self.Current_incr.valueChanged.connect(self.box_to_slider_current)
+
+    def slider_to_box_voltage(self, value):
+        # Slider (mV) -> Spinbox (V)
+        self.Voltage_incr.blockSignals(True)
+        self.Voltage_incr.setValue(value / 1000)
+        self.Voltage_incr.blockSignals(False)
+
+    def box_to_slider_voltage(self, value):
+        # Spinbox (V) -> Slider (mV)
+        self.Slider_voltage.blockSignals(True)
+        self.Slider_voltage.setValue(int(value * 1000))
+        self.Slider_voltage.blockSignals(False)
+
+    def slider_to_box_current(self, value):
+        # Slider (mA) -> Spinbox (A)
+        self.Current_incr.blockSignals(True)
+        self.Current_incr.setValue(value / 1000)
+        self.Current_incr.blockSignals(False)
+
+    def box_to_slider_current(self, value):
+        # Spinbox (A) -> Slider (mA)
+        self.Slider_current.blockSignals(True)
+        self.Slider_current.setValue(int(value * 1000))
+        self.Slider_current.blockSignals(False)
 
     def read_measurements(self): #PARTIE ROMAIN ET YANIS
         """Lit les valeurs mesurées (sans toucher aux consignes)."""
@@ -161,8 +201,8 @@ class PowerSupplyWidget(QWidget):
         Met à jour les paramètres de l’alimentation et affiche les nouvelles valeurs.
         """
         updated_settings = self.alim.update_IV_set_point( #fonction qui demande à l'alim concernée de modifier la valeur des courants et tensions
-        voltage_set_point=self.voltage_value,
-        current_set_point=self.current_value,
+        voltage_set_point = self.voltage_value,
+        current_set_point = self.current_value,
         channel=self.channel 
         )
         
@@ -178,7 +218,7 @@ class PowerSupplyWidget(QWidget):
                 })
 
 
-            print("Réglages mis à jour :", updated_settings)
+            # print("Réglages mis à jour :", updated_settings)
             self.label_Vmeas.setText(f'{updated_settings["Voltage Out"]}')
             self.label_Imeas.setText(f'{updated_settings["Current Out"]}')
             self.label_Vset.setText(f'{updated_settings["Voltage Set"]}V')
