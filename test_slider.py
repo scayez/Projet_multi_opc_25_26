@@ -28,6 +28,7 @@ class test_slider(QWidget):
         # Définir les valeurs min/max des sliders en fonction des valeurs de l'alimentation
         self.slider.setMinimum(0)  
         self.slider.setMaximum(5)
+        self.box.setMaximum(5)
 
 
         # Initialiser les sliders aux valeurs minimales (IMPORTANT !)

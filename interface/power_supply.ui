@@ -96,6 +96,9 @@
          </widget>
         </item>
         <item>
+         <widget class="QDoubleSpinBox" name="Current_incr"/>
+        </item>
+        <item>
          <widget class="Line" name="line_voltage">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -115,6 +118,9 @@
            <enum>Qt::Horizontal</enum>
           </property>
          </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="Voltage_incr"/>
         </item>
         <item>
          <widget class="Line" name="line_3">

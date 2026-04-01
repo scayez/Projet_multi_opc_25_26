@@ -10,8 +10,18 @@
         "Imax": 5000.0
     },
     {
-        "Lens": "Condenser",
+        "Lens": "Condenser1",
         "Id": "GPP-2323 #2 (Channel1)",
+        "Adress": "ASRL4::INSTR",
+        "Channel": 1,
+        "Vmin": 0.0,
+        "Vmax": 12000.0,
+        "Imin": 0.0,
+        "Imax": 1000.0
+    },
+    {
+        "Lens": "Condenser2",
+        "Id": "GPP-2323 #2 (Channel2)",
         "Adress": "ASRL4::INSTR",
         "Channel": 1,
         "Vmin": 0.0,

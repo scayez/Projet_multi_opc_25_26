@@ -36,7 +36,7 @@ class MultiPowerSupplyWidget(QWidget):
         self.power_data = {}  # Dictionnaire pour stocker les dernières valeurs
 
         #PARTIE ROMAIN ET YANIS
-        """Utilisation d'un timer pour récupréer les valuers toutes les 500ms et non plus seulement lorsqu'on bouge les sliders"""
+        """Utilisation d'un timer pour récupérer les valeurs toutes les 500ms et non plus seulement lorsqu'on bouge les sliders"""
         self.timer = QTimer() 
         self.timer.timeout.connect(self.collect_power_data)
         self.timer.start(500)  # toutes les 500 ms
@@ -89,6 +89,7 @@ class MultiPowerSupplyWidget(QWidget):
             info["next_channel"] += 1
             widget.setVisible(True)
 
+            # widget.set_voltage_slider_visible(False)
             widget.set_voltage_slider_visible(False)
             self.power_widgets.append(widget)
 

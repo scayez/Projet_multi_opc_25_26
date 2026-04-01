@@ -193,6 +193,7 @@ class PowerSupplyWidget(QWidget):
         :param visible: booléen pour afficher (True) ou masquer (False)
         """
         self.Slider_voltage.setVisible(visible)
+        self.Voltage_incr.setVisible(visible)
         self.label_Vset.setVisible(visible)
         self.label_Vmeas.setVisible(visible)
         self.label_voltage.setVisible(visible)
