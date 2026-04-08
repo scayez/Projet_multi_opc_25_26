@@ -96,7 +96,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="Current_incr"/>
+         <widget class="QDoubleSpinBox" name="Current_incr">
+          <property name="decimals">
+           <number>3</number>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="Line" name="line_voltage">
@@ -120,7 +124,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="Voltage_incr"/>
+         <widget class="QDoubleSpinBox" name="Voltage_incr">
+          <property name="decimals">
+           <number>3</number>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="Line" name="line_3">

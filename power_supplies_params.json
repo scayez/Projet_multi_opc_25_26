@@ -23,7 +23,7 @@
         "Lens": "Condenser2",
         "Id": "GPP-2323 #2 (Channel2)",
         "Adress": "ASRL4::INSTR",
-        "Channel": 1,
+        "Channel": 2,
         "Vmin": 0.0,
         "Vmax": 12000.0,
         "Imin": 0.0,

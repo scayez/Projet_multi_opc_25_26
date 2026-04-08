@@ -100,16 +100,16 @@ class PowerSupplyWidget(QWidget):
         self.Slider_voltage.setMaximum(int(self.alim.Vmax))
         self.Slider_current.setMinimum(int(self.alim.Imin))
         self.Slider_current.setMaximum(int(self.alim.Imax))
-        self.Voltage_incr.setMaximum(int(self.alim.Vmax/1000))
-        self.Current_incr.setMaximum(int(self.alim.Imax/1000))
-        self.Voltage_incr.setMinimum(int(self.alim.Vmin/1000))
-        self.Current_incr.setMinimum(int(self.alim.Imin/1000))
+        self.Voltage_incr.setMaximum(self.alim.Vmax/1000)
+        self.Current_incr.setMaximum(self.alim.Imax/1000)
+        self.Voltage_incr.setMinimum(self.alim.Vmin/1000)
+        self.Current_incr.setMinimum(self.alim.Imin/1000)
 
-        # Initialiser les sliders aux valeurs minimales (IMPORTANT !)
+        # Initialiser les sliders et box d'incrémentation aux valeurs minimales (IMPORTANT !)
         self.Slider_voltage.setValue(int(self.alim.Vmin))  # mV
         self.Slider_current.setValue(int(self.alim.Imin))  # mA
-        self.Voltage_incr.setValue(int(self.alim.Vmin))  # mV
-        self.Current_incr.setValue(int(self.alim.Imin))  # mA
+        self.Voltage_incr.setValue(self.alim.Vmin)  # mV
+        self.Current_incr.setValue(self.alim.Imin)  # mA
 
         # Initialiser le step des sliders et box d'incrémentation
         self.Voltage_incr.setSingleStep((self.alim.Vmax - self.alim.Vmin) / (100*1000)) # step de 1% de la plage
@@ -123,10 +123,15 @@ class PowerSupplyWidget(QWidget):
         self.label_Vset.setText(f"Voltage : {self.alim.Vmin/1000:.2f}V")
         self.label_Iset.setText(f"Courant : {self.alim.Imin/1000:.3f}A")
 
-        self.Slider_voltage.valueChanged.connect(self.update_voltage)
-        self.Slider_current.valueChanged.connect(self.update_current)
+        self.Slider_voltage.valueChanged.connect(self.update_voltage_from_slider)
+        self.Slider_current.valueChanged.connect(self.update_current_from_slider)
         self.Slider_voltage.valueChanged.connect(self.on_slider_changed)
         self.Slider_current.valueChanged.connect(self.on_slider_changed)
+        self.Voltage_incr.valueChanged.connect(self.update_voltage_from_box)
+        self.Current_incr.valueChanged.connect(self.update_current_from_box)
+        self.Voltage_incr.valueChanged.connect(self.on_slider_changed)
+        self.Current_incr.valueChanged.connect(self.on_slider_changed)
+        
     # --- Liaison sliders <-> spinbox ---
         self.Slider_voltage.valueChanged.connect(self.slider_to_box_voltage)
         self.Voltage_incr.valueChanged.connect(self.box_to_slider_voltage)
@@ -180,7 +185,9 @@ class PowerSupplyWidget(QWidget):
     def on_slider_changed(self):
         """Déclenché par n'importe quel slider"""
         self.update_settings()
-    def update_voltage(self, value):
+
+
+    def update_voltage_from_slider(self, value):
         """
         Callback lorsque le slider de tension est modifié.
         Met à jour la tension de consigne (en V).
@@ -188,7 +195,7 @@ class PowerSupplyWidget(QWidget):
         self.voltage_value = value/1000 
         self.update_settings()
 
-    def update_current(self, value):
+    def update_current_from_slider(self, value):
         """
         Callback lorsque le slider de courant est modifié.
         Met à jour le courant de consigne (en A).
@@ -196,6 +203,16 @@ class PowerSupplyWidget(QWidget):
         self.current_value = value/1000
         self.update_settings()
 
+    def update_voltage_from_box(self, value):
+        """Callback pour la box d'incrémentation de tension (en V)."""
+        self.voltage_value = value
+        self.update_settings()
+
+    def update_current_from_box(self, value):
+        """Callback pour la box d'incrémentation de courant (en A)."""
+        self.current_value = value
+        self.update_settings()
+    
     def update_settings(self):
         """
         Met à jour les paramètres de l’alimentation et affiche les nouvelles valeurs.
