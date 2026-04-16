@@ -62,8 +62,8 @@ class CalculationsWidget(QWidget):
         for lens, values in all_data.items():
             # Conversion des valeurs
             try:
-                v = float(values['voltage'].rstrip('V'))
-                i = float(values['current'].rstrip('A'))
+                v = float(values['voltage_out'].rstrip('V'))
+                i = float(values['current_out'].rstrip('A'))
             except ValueError:
                 continue
                 
