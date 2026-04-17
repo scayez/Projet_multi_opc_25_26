@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="lentille">
+    <file>Dessin lentille.png</file>
+  </qresource>
+</RCC>
