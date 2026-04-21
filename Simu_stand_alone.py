@@ -22,12 +22,10 @@ class SimuWidget(QWidget):
         uic.loadUi(ui_file, self)
         
         # Initialisation
-        self.data = defaultdict(lambda: {'time': [], 'current': []})
-        self.start_time = time.time()
             # Configuration minimale du graphique
         self.plot_widget.clear()
-        self.plot_widget.setLabel('left', 'Courant (A)')
-        self.plot_widget.setLabel('bottom', 'Temps (s)')
+        self.plot_widget.setLabel('left', 'Hauteur du rayon')
+        self.plot_widget.setLabel('bottom', 'z (m)')
         self.plot_widget.addLegend()
         self.plot_widget.showGrid(x=True, y=True)
 
@@ -45,7 +43,44 @@ class SimuWidget(QWidget):
         self.curves = {}
 
         if multi_power_supply:
-            multi_power_supply.powerDataUpdated.connect(self.update_plot)
+            multi_power_supply.powerDataUpdated.connect(self.run_simu)
+
+
+        self.trajectoire = simulation(zmax=0.47287, phi=5000,champ_de_vue=0,ouverture=1)
+        self.z = self.trajectoire.Init_Simu()
+
+
+
+    def run_simu(self, all_data):
+
+                # Liste des lentilles à afficher
+        lenses_to_plot = {"Objective", "Condenser1", "Condenser2"}
+
+        Iobj = None
+        Icond1 = None
+        Icond2 = None
+
+        for lens, values in all_data.items():
+            if lens not in lenses_to_plot:
+                continue  # Ignore les autres lentilles
+
+            try:
+                i = float(values['current_out'].rstrip('A'))
+            except ValueError:
+                continue
+
+            if lens == "Objective":
+                Iobj = i
+            elif lens == "Condenser1":
+                Icond1 = i
+            elif lens == "Condenser2":
+                Icond2 = i
+
+        (self.u,self.B) = self.trajectoire.simu(Icond1, Icond2, Iobj)
+
+        # # Mise à jour des courbes
+        self.curves[lens]['current'].setData(self.z, self.u)
+
 
     def update_plot(self, all_data):
         """Met à jour le graphique avec les nouvelles données"""

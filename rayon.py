@@ -1,13 +1,23 @@
 import initialisation
 import numpy as np
 import matplotlib.pyplot as plt
+import json
+import os
 
 #cette fonction prend en entrée les trois lentilles de la colonne sem, la position de l'écran, le courant dans les bobines ainsi que les conditions initiales du rayon
 #elle renvoie une modélisation du champ magnétique créé par chaque bobine ainsi que la trajectoire du rayon le long de la colonne
 
 def rayon(L1,L2,L3,psi1,psi2,psi3,CI,I,phi):
-    
-    coef=[0.25509,0.736987,0.019275]
+
+    json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'simu_param.json')
+    with open(json_path, 'r') as f:
+        params = json.load(f)[0]  # On prend le premier (et seul) dictionnaire de la liste
+
+    coef_cond1 = params["coef_cond1"]
+    coef_cond2 = params["coef_cond2"]
+    coef_obj = params["coef_obj"]
+
+    coef=[coef_cond1,coef_cond2,coef_obj]
     
     L1.B0=I[0]*coef[0]
     L2.B0=I[1]*coef[1]
