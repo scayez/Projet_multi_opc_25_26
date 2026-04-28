@@ -1,7 +1,7 @@
 import os
 import sys
 import os
-from PyQt6.QtWidgets import QApplication, QWidget, QButtonGroup
+from PyQt6.QtWidgets import QApplication, QWidget, QButtonGroup, QFileDialog
 from PyQt6 import uic
 from pyqtgraph import ImageView
 from image_viewer import SEMImageLive 
@@ -38,6 +38,7 @@ class ScanWidget(QWidget):
         # Connexion des boutons de contrôle
         self.pushButton_start.clicked.connect(self.start_scan)
         self.pushButton_stop.clicked.connect(self.stop_scan)
+        self.pushButton_save.clicked.connect(self.save_image)
     
         # Initialisation de l'alimentation
         self.adresse_alim__GPP2323 = "ASRL5::INSTR"
@@ -147,6 +148,40 @@ class ScanWidget(QWidget):
         self.spinBox_sample_per_pix.setEnabled(not scanning)
         self.pushButton_start.setEnabled(not scanning)
         self.pushButton_stop.setEnabled(scanning)
+        self.pushButton_save.setEnabled(not scanning and self.sem_viewer is not None and self.sem_viewer.image is not None)
+
+    # Enregistrer l'image actuelle dans un fichier
+    def save_image(self):
+        """
+        Enregistre l'image actuelle dans un fichier PNG.
+        Ouvre une boîte de dialogue pour choisir l'emplacement et le nom du fichier.
+        """
+        if self.sem_viewer is None or self.sem_viewer.image is None:
+            print("Aucune image à enregistrer. Lancez d'abord un scan.")
+            return
+
+        # Ouvrir une boîte de dialogue pour choisir le fichier
+        file_path, _ = QFileDialog.getSaveFileName(
+            self,
+            "Enregistrer l'image",
+            "",
+            "Images PNG (*.png);;Images TIFF (*.tiff);;Tous les fichiers (*)"
+        )
+
+        if file_path:
+            try:
+                import numpy as np
+                from PIL import Image
+                # Convertir le tableau numpy en image PIL
+                img_data = self.sem_viewer.image
+                # Assurer que les valeurs sont dans la plage correcte
+                if img_data.dtype != np.uint8:
+                    img_data = (img_data / img_data.max() * 255).astype(np.uint8) if img_data.max() > 0 else img_data.astype(np.uint8)
+                img = Image.fromarray(img_data)
+                img.save(file_path)
+                print(f"Image enregistrée : {file_path}")
+            except Exception as e:
+                print(f"Erreur lors de l'enregistrement : {e}")
 
     def closeEvent(self, event):
         """
