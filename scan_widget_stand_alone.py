@@ -150,6 +150,7 @@ class ScanWidget(QWidget):
         self.pushButton_stop.setEnabled(scanning)
         self.pushButton_save.setEnabled(not scanning and self.sem_viewer is not None and self.sem_viewer.image is not None)
 
+
     # Enregistrer l'image actuelle dans un fichier
     def save_image(self):
         """
