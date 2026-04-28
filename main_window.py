@@ -7,6 +7,7 @@ from camera_widget_stand_alone import CameraWidget
 from multi_power_supply_stand_alone import MultiPowerSupplyWidget
 from scan_widget_stand_alone import ScanWidget
 from settings_stand_alone import SettingsWidget
+from simu_stand_alone import SimuWidget
 from PyQt6.QtCore import Qt
 
 # Chemin vers le fichier UI
@@ -23,6 +24,7 @@ class MainWindow(QMainWindow):
         self.pushButton_multi_power_supply.clicked.connect(self.open_power_supply)
         self.pushButton_camera.clicked.connect(self.open_camera)
         self.pushButton_scan.clicked.connect(self.open_scan)
+        self.pushButton_beam_simulation.clicked.connect(self.open_simulation)
 
         self.checkBox_admin.stateChanged.connect(self.toggle_admin_mode)
         #self.pushButton_settings.clicked.connect(self.open_settings)
@@ -124,6 +126,17 @@ class MainWindow(QMainWindow):
         self.settings_widget.raise_()
         self.settings_widget.activateWindow()
         self.settings_widget.activateWindow()  # Pour donner le focus
+
+    def open_simulation(self):
+        """Ouvre la fenêtre de simulation"""
+        self.simu_widget = SimuWidget()  # Crée une nouvelle instance à chaque clic
+        self.simu_widget.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+        self.simu_widget.show()
+        self.simu_widget.raise_()
+        self.simu_widget.activateWindow()
+
+    def on_simulation_closed(self):
+        self.simu_widget = None
     
 
     def closeEvent(self, event):

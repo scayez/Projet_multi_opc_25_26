@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>700</height>
+    <height>800</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,13 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>500</width>
-    <height>700</height>
+    <height>800</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>500</width>
-    <height>700</height>
+    <height>800</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -59,7 +59,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="Images QT/lentille.qrc">:/lentille/Dessin lentille.png</pixmap>
+    <pixmap>:/lentille/Dessin lentille.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -78,7 +78,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="Images QT/lentille.qrc">:/lentille/Dessin lentille.png</pixmap>
+    <pixmap>:/lentille/Dessin lentille.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -97,7 +97,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="Images QT/lentille.qrc">:/lentille/Dessin lentille.png</pixmap>
+    <pixmap>:/lentille/Dessin lentille.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -116,7 +116,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="Images QT/lentille.qrc">:/lentille/Dessin lentille.png</pixmap>
+    <pixmap>:/lentille/Dessin lentille.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -135,7 +135,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="Images QT/lentille.qrc">:/lentille/Dessin lentille.png</pixmap>
+    <pixmap>:/lentille/Dessin lentille.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -160,7 +160,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="Images QT/lentille.qrc">:/lentille/Dessin lentille.png</pixmap>
+    <pixmap>:/lentille/Dessin lentille.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -274,6 +274,58 @@
    <property name="text">
     <string>Show symmetrical ray</string>
    </property>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>700</y>
+     <width>351</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_7">
+      <property name="text">
+       <string>Screen position (m)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_8">
+      <property name="text">
+       <string>Beam energy (eV)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="label_9">
+      <property name="text">
+       <string>Field</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="box_screen_position"/>
+    </item>
+    <item row="1" column="1">
+     <widget class="QDoubleSpinBox" name="box_beam_energy"/>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLabel" name="label_10">
+      <property name="text">
+       <string>Aperture</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QDoubleSpinBox" name="box_field"/>
+    </item>
+    <item row="1" column="3">
+     <widget class="QDoubleSpinBox" name="box_aperture"/>
+    </item>
+   </layout>
   </widget>
  </widget>
  <customwidgets>
