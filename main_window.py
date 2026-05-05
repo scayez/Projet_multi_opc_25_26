@@ -38,6 +38,9 @@ class MainWindow(QMainWindow):
         self.scan_window = None
         self.power_supply_window = None
 
+        # Initialiser le widget de simulation à None
+        self.simu_widget = None
+
     def open_camera(self):
         print("Camera")
         if self.camera_window is None:
@@ -58,6 +61,11 @@ class MainWindow(QMainWindow):
             self.power_supply_window = MultiPowerSupplyWidget()
             self.power_supply_window.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)  # Libérer la mémoire à la fermeture
             self.power_supply_window.destroyed.connect(self.on_power_supply_closed)
+
+            # Connecter à la simulation si elle est déjà ouverte
+            if hasattr(self, 'simu_widget') and self.simu_widget is not None:
+                self.simu_widget.connect_power_supply(self.power_supply_window)
+        
         self.power_supply_window.show()
         self.power_supply_window.raise_()
         self.power_supply_window.activateWindow()
@@ -129,7 +137,7 @@ class MainWindow(QMainWindow):
 
     def open_simulation(self):
         """Ouvre la fenêtre de simulation"""
-        self.simu_widget = SimuWidget()  # Crée une nouvelle instance à chaque clic
+        self.simu_widget = SimuWidget(multi_power_supply=self.power_supply_window)  # Crée une nouvelle instance à chaque clic
         self.simu_widget.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.simu_widget.show()
         self.simu_widget.raise_()

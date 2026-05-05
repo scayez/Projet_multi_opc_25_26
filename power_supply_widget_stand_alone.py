@@ -230,8 +230,8 @@ class PowerSupplyWidget(QWidget):
                 self.sliderValuesChanged.emit({
                     'lens': self.lens,
                     'channel': self.channel,
-                    'voltage': updated_settings["Voltage Out"],
-                    'current': updated_settings["Current Out"]
+                    'voltage_out': updated_settings["Voltage Out"],
+                    'current_out': updated_settings["Current Out"]
                 })
 
 

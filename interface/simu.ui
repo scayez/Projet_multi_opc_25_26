@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>800</height>
+    <width>600</width>
+    <height>900</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,14 +18,14 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>500</width>
-    <height>800</height>
+    <width>600</width>
+    <height>900</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>500</width>
-    <height>800</height>
+    <width>600</width>
+    <height>900</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -34,10 +34,10 @@
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>140</x>
+     <x>160</x>
      <y>20</y>
-     <width>221</width>
-     <height>521</height>
+     <width>281</width>
+     <height>591</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -46,108 +46,108 @@
     </item>
    </layout>
   </widget>
-  <widget class="QLabel" name="lentille">
+  <widget class="QLabel" name="lens1_cond1">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>70</y>
-     <width>61</width>
-     <height>51</height>
+     <x>80</x>
+     <y>120</y>
+     <width>50</width>
+     <height>50</height>
     </rect>
    </property>
    <property name="text">
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>:/lentille/Dessin lentille.png</pixmap>
+    <pixmap resource="Images QT/lentille.qrc">:/lentille/Dessin lentille.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="lentille_2">
+  <widget class="QLabel" name="lens1_cond2">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>220</y>
-     <width>61</width>
-     <height>51</height>
+     <x>80</x>
+     <y>190</y>
+     <width>50</width>
+     <height>50</height>
     </rect>
    </property>
    <property name="text">
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>:/lentille/Dessin lentille.png</pixmap>
+    <pixmap resource="Images QT/lentille.qrc">:/lentille/Dessin lentille.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="lentille_3">
+  <widget class="QLabel" name="lens2_obj">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>360</y>
-     <width>61</width>
-     <height>51</height>
+     <x>470</x>
+     <y>400</y>
+     <width>50</width>
+     <height>50</height>
     </rect>
    </property>
    <property name="text">
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>:/lentille/Dessin lentille.png</pixmap>
+    <pixmap resource="Images QT/lentille.qrc">:/lentille/Dessin lentille.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="lentille_4">
+  <widget class="QLabel" name="lens2_cond2">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>220</y>
-     <width>61</width>
-     <height>51</height>
+     <x>470</x>
+     <y>190</y>
+     <width>50</width>
+     <height>50</height>
     </rect>
    </property>
    <property name="text">
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>:/lentille/Dessin lentille.png</pixmap>
+    <pixmap resource="Images QT/lentille.qrc">:/lentille/Dessin lentille.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="lentille_5">
+  <widget class="QLabel" name="lens2_cond1">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>70</y>
-     <width>61</width>
-     <height>51</height>
+     <x>470</x>
+     <y>120</y>
+     <width>50</width>
+     <height>50</height>
     </rect>
    </property>
    <property name="text">
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>:/lentille/Dessin lentille.png</pixmap>
+    <pixmap resource="Images QT/lentille.qrc">:/lentille/Dessin lentille.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="lentille_6">
+  <widget class="QLabel" name="lens1_obj">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>360</y>
-     <width>61</width>
-     <height>51</height>
+     <x>80</x>
+     <y>400</y>
+     <width>50</width>
+     <height>50</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -160,7 +160,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>:/lentille/Dessin lentille.png</pixmap>
+    <pixmap resource="Images QT/lentille.qrc">:/lentille/Dessin lentille.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -169,9 +169,9 @@
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>560</y>
-     <width>471</width>
+     <x>30</x>
+     <y>650</y>
+     <width>541</width>
      <height>121</height>
     </rect>
    </property>
@@ -262,13 +262,13 @@
     </item>
    </layout>
   </widget>
-  <widget class="QCheckBox" name="checkBox">
+  <widget class="QCheckBox" name="box_symmetrical">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>520</y>
+     <x>440</x>
+     <y>630</y>
      <width>131</width>
-     <height>17</height>
+     <height>16</height>
     </rect>
    </property>
    <property name="text">
@@ -278,8 +278,8 @@
   <widget class="QWidget" name="gridLayoutWidget_2">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>700</y>
+     <x>120</x>
+     <y>790</y>
      <width>351</width>
      <height>81</height>
     </rect>
@@ -326,6 +326,84 @@
      <widget class="QDoubleSpinBox" name="box_aperture"/>
     </item>
    </layout>
+  </widget>
+  <widget class="QLabel" name="label_11">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>130</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Condenser 1</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_12">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>130</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Condenser 1</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_13">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>200</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Condenser 2</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_14">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>200</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Condenser 2</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_15">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>410</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Objective</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_16">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>410</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Objective</string>
+   </property>
   </widget>
  </widget>
  <customwidgets>
