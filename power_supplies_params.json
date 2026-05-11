@@ -6,8 +6,10 @@
         "Channel": null,
         "Vmin": 0.0,
         "Vmax": 12000.0,
+        "Vdef": 10000.0,
         "Imin": 0.0,
-        "Imax": 5000.0
+        "Imax": 5000.0,
+        "Idef": 0.0
     },
     {
         "Lens": "Condenser1",
@@ -16,8 +18,10 @@
         "Channel": 1,
         "Vmin": 0.0,
         "Vmax": 12000.0,
+        "Vdef": 10000.0,
         "Imin": 0.0,
-        "Imax": 1000.0
+        "Imax": 1000.0,
+        "Idef": 0.0
     },
     {
         "Lens": "Condenser2",
@@ -26,8 +30,10 @@
         "Channel": 2,
         "Vmin": 0.0,
         "Vmax": 12000.0,
+        "Vdef": 10000.0,
         "Imin": 0.0,
-        "Imax": 1000.0
+        "Imax": 1000.0,
+        "Idef": 0.0
     },
     {
         "Lens": "Scan X",
@@ -36,8 +42,10 @@
         "Channel": 1,
         "Vmin": 0.0,
         "Vmax": 1000.0,
+        "Vdef": 700.0,
         "Imin": 0.0,
-        "Imax": 500.0
+        "Imax": 500.0,
+        "Idef": 0.0
     },
     {
         "Lens": "Scan Y",
@@ -46,7 +54,9 @@
         "Channel": 2,
         "Vmin": 0.0,
         "Vmax": 1000.0,
+        "Vdef": 700.0,
         "Imin": 0.0,
-        "Imax": 500.0
+        "Imax": 500.0,
+        "Idef": 0.0
     }
 ]

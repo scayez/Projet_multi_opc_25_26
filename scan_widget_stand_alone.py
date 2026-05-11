@@ -29,7 +29,7 @@ class ScanWidget(QWidget):
         acquisition : instance de NiDetectorAcquisition pour l'acquisition des niveaux de gris sur le detecteur.
         sem_viewer : instance de SEMImageLive pour l'acquisition et l'affichage de l'image.
     """
-    def __init__(self, parent=None):
+    def __init__(self, multi_power_supply_widget=None, parent=None):
         """
         Initialise l'interface graphique et les périphériques nécessaires.
         """
@@ -39,6 +39,9 @@ class ScanWidget(QWidget):
         self.pushButton_start.clicked.connect(self.start_scan)
         self.pushButton_stop.clicked.connect(self.stop_scan)
         self.pushButton_save.clicked.connect(self.save_image)
+
+        # Stocker une référence au widget d'alimentation multiple (si nécessaire)
+        self.multi_power_supply_widget = multi_power_supply_widget
     
         # Initialisation de l'alimentation
         self.adresse_alim__GPP2323 = "ASRL5::INSTR"
@@ -46,8 +49,8 @@ class ScanWidget(QWidget):
             connection_mode="USB",
             address=self.adresse_alim__GPP2323,
             baud_rate=115200,
-            Vmin=0, Vmax=12000,
-            Imin=0.0, Imax=1000 #ATTENTION CETTE VALEUR SERT DE SECURITE. Elle est prioritaire sur doubleSpinBox_currrent_range
+            Vmin=0, Vmax=1000,
+            Imin=0.0, Imax=500 #ATTENTION CETTE VALEUR SERT DE SECURITE. Elle est prioritaire sur doubleSpinBox_currrent_range
         )
         # Vérification de la connexion à l'alimentation
         if self.alim.open_connection() is None:
@@ -55,6 +58,11 @@ class ScanWidget(QWidget):
         # Activer les sorties 1 et 2
         self.alim.enable_output(channel=1)
         self.alim.enable_output(channel=2)
+
+        # Régler la tension par défaut à 0.7 V (700 mV) sur les deux voies
+        self.alim.set_voltage(0.7, channel=1)
+        self.alim.set_voltage(0.7, channel=2)
+
         # Initialiser l'acquisition simulée #####ATTENTION CHANGER POUR ACQUISITION REELE ######
         #self.acquisition = NiDetectorAcquisition(response_time=0.001)
         self.acquisition = NiDetectorAcquisition(channel_read="Dev2/ai1")#, response_time=0.001)
@@ -63,10 +71,39 @@ class ScanWidget(QWidget):
         # Désactiver certains éléments de l'interface tant qu'aucun scan n'est lancé
         self.update_ui_state(scanning=False)
 
+        # Connecter les changements de paramètres à la mise à jour de la durée du scan
+        self.doubleSpinBox_currrent_range.valueChanged.connect(self.update_scan_duration)
+        self.spinBox_reso.valueChanged.connect(self.update_scan_duration)
+        self.spinBox_sample_per_pix.valueChanged.connect(self.update_scan_duration)
+
+        # Initialiser la valeur par défaut de la durée du scan
+        self.resolution = self.spinBox_reso.value()
+        self.samples_per_pixel = self.spinBox_sample_per_pix.value()
+        total_points = self.resolution ** 2 * self.samples_per_pixel
+        acquisition_time_per_point = 0.0213  # Temps d'acquisition par point (en secondes), à ajuster selon votre matériel
+        total_acquisition_time = total_points * acquisition_time_per_point
+        minutes, seconds = divmod(total_acquisition_time, 60)
+        self.label_scan_duration.setText(f" {int(minutes)} min {int(seconds)} s")
+
+
+
     # Afficher la tension SE en continu dans l'interface graphique
     @pyqtSlot(float)
     def update_voltage_label(self, voltage):
         self.label_voltage_measured.setText(f"{voltage:.6f}")
+
+    def update_scan_duration(self):
+        """
+        Met à jour l'affichage de la durée estimée du scan en fonction des paramètres actuels.
+        Cette fonction peut être appelée lorsque les paramètres de scan sont modifiés.
+        """
+        self.resolution = self.spinBox_reso.value()
+        self.samples_per_pixel = self.spinBox_sample_per_pix.value()
+        total_points = self.resolution ** 2 * self.samples_per_pixel
+        acquisition_time_per_point = 0.0213  # Temps d'acquisition par point (en secondes), à ajuster selon votre matériel
+        total_acquisition_time = total_points * acquisition_time_per_point
+        minutes, seconds = divmod(total_acquisition_time, 60)
+        self.label_scan_duration.setText(f" {int(minutes)} min {int(seconds)} s")
 
     def start_scan(self):
         """
@@ -78,6 +115,10 @@ class ScanWidget(QWidget):
             self.stop_scan()  # Arrête un éventuel scan en cours
         # Désactiver les contrôles de l’interface
         self.update_ui_state(scanning=True)
+
+        # Informer le widget d'alimentation multiple (s'il existe) que le scan est en cours
+        if self.multi_power_supply_widget is not None:
+            self.multi_power_supply_widget.scan_running = True
 
         # Régler la tension limite AVANT le scan (adapter la valeur à votre expérience) !! YANIS ET ROMAIN
         self.alim.set_voltage(0.7, channel=1)  # 10V par exemple
@@ -134,6 +175,10 @@ class ScanWidget(QWidget):
         Réactive les contrôles dans l’interface.
         """
         self.update_ui_state(scanning=False)
+
+        # Informer le widget d'alimentation multiple (s'il existe) que le scan est terminé
+        if self.multi_power_supply_widget is not None:
+            self.multi_power_supply_widget.scan_running = False 
         print("Scan terminé (signal reçu)")
       
     def update_ui_state(self, scanning: bool):

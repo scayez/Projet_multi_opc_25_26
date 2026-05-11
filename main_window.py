@@ -86,7 +86,7 @@ class MainWindow(QMainWindow):
 
 
         if self.scan_window is None:
-            self.scan_window = ScanWidget()
+            self.scan_window = ScanWidget(multi_power_supply_widget=self.power_supply_window)
             self.scan_window.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)  # Libérer la mémoire à la fermeture
             self.scan_window.destroyed.connect(self.on_scan_closed)
         self.scan_window.show()
