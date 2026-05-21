@@ -32,6 +32,8 @@ class MultiPowerSupplyWidget(QWidget):
         self.power_supply_params = self.load_power_supply_params()
         self.create_power_supplies(self.power_supply_params)
 
+        self.scan_running = False  # Flag pour indiquer si un scan est en cours
+
         self.lineEdit_password.setVisible(False)
         self.power_data = {}  # Dictionnaire pour stocker les dernières valeurs
 
@@ -89,6 +91,16 @@ class MultiPowerSupplyWidget(QWidget):
             info["next_channel"] += 1
             widget.setVisible(True)
 
+            # Initialiser la tension à Vdef si elle est définie, sinon à Vmin
+            Vdef = entry.get("Vdef", info["instance"].Vmin)
+            Idef = entry.get("Idef", info["instance"].Imin)  # Optionnel, si tu veux aussi le courant
+            try:
+                widget.alim.update_IV_set_point(voltage_set_point=Vdef/1000, current_set_point=Idef/1000 if Idef else widget.alim.Imin/1000, channel=ch)
+                widget.Slider_voltage.setValue(int(Vdef))
+                widget.Voltage_incr.setValue(Vdef/1000)
+            except Exception as e:
+                print(f"Erreur lors de l'init de la tension par défaut pour {entry['Lens']} : {e}")
+
             # widget.set_voltage_slider_visible(False)
             widget.set_voltage_slider_visible(False)
             self.power_widgets.append(widget)
@@ -96,7 +108,7 @@ class MultiPowerSupplyWidget(QWidget):
         # 5) Masquer les widgets non utilisés
         for widget in widgets_sorted[len(params):]:
             widget.setVisible(False)
-
+        
                 # Après avoir créé les widgets, connecter leurs signaux
         for widget in self.power_widgets:
             widget.sliderValuesChanged.connect(self.handle_single_power_data)
@@ -164,9 +176,28 @@ class MultiPowerSupplyWidget(QWidget):
     def closeEvent(self, event):
         # Ici vous pouvez ajouter du code avant la fermeture
         print("La fenêtre est sur le point de se fermer")
-        # self.alim_GPP2323.disable_output(channel=1)
-        # self.alim_GPP2323.disable_output(channel=2)
-        #self.alim_GPP1326.disable_output(channel=1)
+
+            # Mettre toutes les alimentations à 0V et 0A
+        if not getattr(self, "scan_running", False):
+            # Désactiver les voies seulement si pas de scan en cours, sinon laisser les réglages pour le prochain scan
+            for widget in self.power_widgets:
+                try:
+                    widget.alim.update_IV_set_point(
+                        voltage_set_point=0,
+                        current_set_point=0,
+                        channel=widget.channel
+                    )
+                    widget.Slider_voltage.setValue(0)
+                    widget.Voltage_incr.setValue(0)
+                    widget.Slider_current.setValue(0)
+                    widget.Current_incr.setValue(0)
+                    # Désactiver la sortie de la voie
+                    widget.alim.disable_output(channel=widget.channel)
+                except Exception as e:
+                    print(f"Erreur lors de la mise à 0/désactivation de l'alim {getattr(widget, 'lens', '?')}: {e}")
+        else:
+            print("Scan en cours : les voies restent actives.")
+        event.accept()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

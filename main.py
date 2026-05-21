@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class simulation:
-    def __init__(self,L1,L2,L3,psi1,psi2,psi3,z,zmax,phi,champ_de_vue,ouverture):
+    def __init__(self, L1=None, L2=None, L3=None, psi1=None, psi2=None, psi3=None, z=None, zmax=0, phi=0, champ_de_vue=0, ouverture=0):
         self.L1=L1
         self.L2=L2
         self.L3=L3
@@ -30,7 +30,7 @@ class simulation:
         self.CI=[self.champ_de_vue,self.ouverture]
 
         #initialisation de toutes les variables qui n'ont besoin d'être calculées une seule fois. pour éviter de devoir tout recalculer à chaque fois (+ rapide)
-        L1,L2,L3,self.psi1,self.psi2,self.psi3,self.z=initialisation.initialisation(L1,L2,L3,self.zmax)
+        self.L1,self.L2,self.L3,self.psi1,self.psi2,self.psi3,self.z=initialisation.initialisation(self.L1,self.L2,self.L3,self.zmax)
         return self.z
     
 
