@@ -10,6 +10,8 @@ from power_supply import PowerSupply
 from acq import NiDetectorAcquisition
 from PyQt6.QtWidgets import QVBoxLayout
 from PyQt6.QtCore import pyqtSlot
+import numpy as np
+from PIL import Image
 
 # Définir le chemin du fichier UI (interface graphique)
 dossier_courant = os.path.dirname(os.path.abspath(__file__))
@@ -199,14 +201,29 @@ class ScanWidget(QWidget):
     # Enregistrer l'image actuelle dans un fichier
     def save_image(self):
         """
-        Enregistre l'image actuelle dans un fichier PNG.
-        Ouvre une boîte de dialogue pour choisir l'emplacement et le nom du fichier.
+        Enregistre l'image actuelle affichée dans le widget dans un fichier PNG.
         """
-        if self.sem_viewer is None or self.sem_viewer.image is None:
+
+
+        img_data = None
+        if hasattr(self, "image_view") and self.image_view is not None:
+            img_data = self.image_view.getProcessedImage()
+            # Correction de l'orientation (90° trigonométrique)
+            img_data = np.rot90(img_data, k=-1)
+            # Application du contraste comme affiché
+            levels = self.image_view.getLevels()
+            if levels is not None:
+                min_level, max_level = levels
+                img_data = np.clip((img_data - min_level) / (max_level - min_level) * 255, 0, 255).astype(np.uint8)
+            else:
+                img_data = (img_data / img_data.max() * 255).astype(np.uint8)
+        elif self.sem_viewer is not None and hasattr(self.sem_viewer, "image"):
+            img_data = self.sem_viewer.image
+
+        if img_data is None:
             print("Aucune image à enregistrer. Lancez d'abord un scan.")
             return
 
-        # Ouvrir une boîte de dialogue pour choisir le fichier
         file_path, _ = QFileDialog.getSaveFileName(
             self,
             "Enregistrer l'image",
@@ -216,13 +233,6 @@ class ScanWidget(QWidget):
 
         if file_path:
             try:
-                import numpy as np
-                from PIL import Image
-                # Convertir le tableau numpy en image PIL
-                img_data = self.sem_viewer.image
-                # Assurer que les valeurs sont dans la plage correcte
-                if img_data.dtype != np.uint8:
-                    img_data = (img_data / img_data.max() * 255).astype(np.uint8) if img_data.max() > 0 else img_data.astype(np.uint8)
                 img = Image.fromarray(img_data)
                 img.save(file_path)
                 print(f"Image enregistrée : {file_path}")

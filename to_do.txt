@@ -1,0 +1,3 @@
+- Regarder pour faire marcher le thread de la caméra et le thread de la simulation en même temps
+- Mieux gérer la fermeture des fenetres de scan et multi power supply : si on ferme multi power supply pendant qu’un scan est en cours ça désactive quand même les voies 
+    => peut-être fermer les voies de scan quand les fenêtres de multi_power_supply et de scan sont tous les deux fermés

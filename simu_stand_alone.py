@@ -12,6 +12,8 @@ from main import simulation
 from PyQt6.QtGui import QPixmap
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
+import numpy as np
+from scipy.signal import argrelextrema
 
 # Chargement du fichier .ui contenant l'interface graphique
 dossier_courant = os.path.dirname(os.path.abspath(__file__))
@@ -138,28 +140,21 @@ class SimuWidget(QWidget):
 
     # Méthode pour exécuter la simulation et mettre à jour le graphique
     def run_simu(self, all_data):
-
-                # Liste des lentilles à afficher
+        # Liste des lentilles à afficher
         lenses_to_plot = {"Objective", "Condenser1", "Condenser2"}
 
-        Iobj = 0.0
-        Icond1 = 0.0
-        Icond2 = 0.0
+        # Toujours initialiser à 0
+        Iobj = 0.0000
+        Icond1 = 0.0000
+        Icond2 = 0.0000
 
-        for lens, values in all_data.items():
-            if lens not in lenses_to_plot:
-                continue  # Ignore les autres lentilles
-
-            # Vérifie la présence de la clé avant d'y accéder
-            if 'current_out' not in values:
-                print(f"Pas de 'current_out' pour {lens}, values={values}")
-                continue
-
+        for lens in lenses_to_plot:
+            values = all_data.get(lens, {})
+            current_str = values.get('current_out', None)
             try:
-                i = float(values['current_out'].rstrip('A'))
-            except ValueError:
-                continue
-
+                i = float(current_str.rstrip('A')) if current_str else 0.0000
+            except Exception:
+                i = 0.0000
             if lens == "Objective":
                 Iobj = i
             elif lens == "Condenser1":
@@ -172,6 +167,46 @@ class SimuWidget(QWidget):
         self.label_Iobj.setText(f'{Iobj}')
 
         (self.u,self.B) = self.trajectoire.simu(Icond1, Icond2, Iobj)
+
+        ###### Trouver les maxima de champ magnétique pour les afficher dans l'UI ######
+
+        # Trouver les indices des maxima locaux
+        maxima_indices = argrelextrema(np.array(self.B), np.greater)[0]
+
+        # Récupérer les z et B correspondants
+        z_maxima = np.array(self.z)[maxima_indices]
+        B_maxima = np.array(self.B)[maxima_indices]
+
+        if len(B_maxima) == 0:
+            # Aucun maximum détecté, probablement pas de courant
+            self.label_Bobj.setText("0.000 T")
+            self.label_Bcond1.setText("0.000 T")
+            self.label_Bcond2.setText("0.000 T")
+        else:
+            # Position des lentilles
+            z_lens_objective = 0.39287  # position z de l'objectif
+            z_lens_cond1 = 0.07487      # position z du condenseur 1
+            z_lens_cond2 = 0.16437      # position z du condenseur 2
+
+            # Seuil de proximité (en mètres, à ajuster selon la précision de tes z)
+            seuil = 0.01
+
+            def max_if_close(z_lens):
+                if len(z_maxima) == 0:
+                    return 0.0
+                idx = np.argmin(np.abs(z_maxima - z_lens))
+                if np.abs(z_maxima[idx] - z_lens) < seuil:
+                    return B_maxima[idx]
+                else:
+                    return 0.0
+
+            B_obj = max_if_close(z_lens_objective)
+            B_cond1 = max_if_close(z_lens_cond1)
+            B_cond2 = max_if_close(z_lens_cond2)
+
+            self.label_Bobj.setText(f"{B_obj:.3f} T")
+            self.label_Bcond1.setText(f"{B_cond1:.3f} T")
+            self.label_Bcond2.setText(f"{B_cond2:.3f} T")
         
 
         #Création de la courbe de simulation si elle n'existe pas encore
